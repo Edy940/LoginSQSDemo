@@ -1,0 +1,26 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+
+# VS Code
+.vscode/
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Arquivos de configuração sensíveis
+**/appsettings.json
+**/appsettings.Development.json
+**/appsettings.Production.json
+
+# Outros
+.env
+
+# VS / IDE
+.vs/
+**/.vs/
