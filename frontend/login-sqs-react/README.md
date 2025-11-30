@@ -1,16 +1,81 @@
-# React + Vite
+# LoginSqsDemo — API .NET + React + Microsserviços com AWS SQS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Projeto desenvolvido com foco em demonstrar domínio de **C#/.NET**, **React**, **AWS (SQS)**, 
+**mensageria**, **microsserviços**, boas práticas de **Clean Code** e organização 
+de fluxo Git no padrão **GitFlow** (main/develop/feature/hotfix).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Visão Geral
 
-## React Compiler
+O projeto consiste em um pequeno sistema com:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Frontend React** com telas de **Login** e **Cadastro**
+- **API em .NET 8+ (Auth.Api)** para autenticação
+- **Worker em .NET (Auth.Worker)** consumindo mensagens da fila SQS
+- **Mensageria AWS SQS** para comunicação assíncrona entre serviços
+- Arquitetura baseada em **microserviços** (API → eventos → worker)
 
-## Expanding the ESLint configuration
+Fluxo básico:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. O usuário faz o **cadastro** pelo React ou Swagger.
+2. A API registra o usuário e publica um **evento em JSON no SQS**.
+3. O **Worker** consome a mensagem da fila e processa o evento.
+4. O sistema se mantém escalável, desacoplado e pronto para ambiente cloud.
+
+---
+
+## 🧱 Arquitetura
+
+- **Auth.Api** expõe endpoints REST:
+  - `POST /api/auth/register`
+  - `POST /api/auth/login`
+
+- **Auth.Worker**:
+  - Lê mensagens da fila SQS
+  - Processa eventos de usuário registrado
+  - Deleta mensagens após o processamento
+  - Escreve logs estruturados
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+### Backend
+- .NET 8+ (Minimal APIs)
+- BCrypt.Net (hash de senha)
+- AWS SDK for .NET (SQS)
+- Injeção de dependência (DI)
+- Clean Code / boas práticas
+
+### Frontend
+- React + Vite
+- Fetch API
+- Componentes simples e funcionais
+
+### Cloud / Arquitetura
+- AWS SQS (mensageria)
+- Comunicação assíncrona orientada a eventos
+- Microsserviços independentes (API & Worker)
+
+### Git / Organização
+- GitFlow:
+  - `main`
+  - `develop`
+  - `feature/*`
+  - `hotfix/*`
+- Commits semânticos (feat, fix, chore…)
+
+---
+
+## 🗂️ Estrutura de Pastas
+
+```text
+LoginSqsDemo/
+├── backend/
+│   ├── Auth.Api/
+│   └── Auth.Worker/
+├── frontend/
+│   └── login-sqs-react/
+├── appsettings.example.json
+└── README.md
